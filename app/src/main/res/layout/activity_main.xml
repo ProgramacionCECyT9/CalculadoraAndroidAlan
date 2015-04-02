@@ -14,10 +14,10 @@
         android:gravity="center_vertical|end"
         android:paddingRight="10dp"
         android:textSize="50sp"
+        android:textColor="#555555"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textColor="#555555" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="50dp"
@@ -175,7 +175,7 @@
         android:layout_marginLeft="8dp"
         android:layout_toLeftOf="@+id/buttonClear"
         android:layout_toStartOf="@+id/buttonClear"
-        android:onClick="onClickDot" />
+        android:onClick="onClickPointButton" />
 
     <Button
         android:layout_width="120dp"

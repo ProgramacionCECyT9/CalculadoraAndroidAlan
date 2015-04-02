@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
 
+    // Calculator variables
     Double number1, number2, result;
     String operator;
 
@@ -19,6 +20,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Variables inizialitation
         defaultValues();
     }
 
@@ -44,6 +46,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Inicialization methods
     public void defaultValues() {
         number1 = 0.0;
         number2 = 0.0;
@@ -58,6 +61,7 @@ public class MainActivity extends ActionBarActivity {
         operator = "";
     }
 
+    // Clearing text views
     public void clearText() {
         TextView numberTextView = (TextView) findViewById(R.id.numberTextView);
         TextView operationTextView = (TextView) findViewById(R.id.operationTextView);
@@ -67,7 +71,9 @@ public class MainActivity extends ActionBarActivity {
         operationTextView.setTextColor(Color.parseColor("#555555"));
     }
 
+    // Add digits to the current number
     public void onClickNumberButton(View numberButton) {
+        // Get the number from button's text
         Button button = (Button) numberButton;
         String number = button.getText().toString();
         TextView numberTextView = (TextView) findViewById(R.id.numberTextView);
@@ -81,37 +87,46 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void onClickDot(View dotButton) {
+    // Add a decimal point to the current number
+    public void onClickPointButton(View pointButton) {
         TextView numberTextView = (TextView) findViewById(R.id.numberTextView);
         TextView operationTextView = (TextView) findViewById(R.id.operationTextView);
+        // Add the point in a new number after the result of the previous operation is shown
         if(operationTextView.getText().toString().equals("=")) {
             operationTextView.setText("");
             numberTextView.setText(".");
         }
-        else if(!numberTextView.getText().toString().contains(".")) {
-            numberTextView.append(".");
+        // Allows just one decimal point in the number
+        else if(numberTextView.getText().toString().contains(".")) {
+            numberTextView.setTextColor(Color.parseColor("#FF0000"));
         }
         else {
-            numberTextView.setTextColor(Color.parseColor("#FF0000"));
+            numberTextView.append(".");
         }
     }
 
     public void onClickOperationButton(View operationButton) {
+        // Get the operation symbol from button's text
         Button button = (Button) operationButton;
         TextView numberTextView = (TextView) findViewById(R.id.numberTextView);
         TextView operatorTextView = (TextView) findViewById(R.id.operationTextView);
+        // Allows just one operation before do click on equals button
         if(operator.equals("")) {
             operator = button.getText().toString();
             String textViewContent = numberTextView.getText().toString();
+            // If the text view is empty, takes number1 as 0
             if(textViewContent.equals("")) {
                 number1 = 0.0;
             }
             else {
                 number1 = Double.parseDouble(textViewContent);
             }
+            // If there is another number before square root operation
+            // it will be multiply by the second number's square root
             if(operator.equals("√") && !number1.toString().equals("0.0")) {
                 operator = "*" + operator;
             }
+            // Show the operation symbol in screen and clear the number text view
             operatorTextView.setText(operator);
             numberTextView.setText("");
             numberTextView.setTextColor(Color.parseColor("#555555"));
@@ -125,12 +140,15 @@ public class MainActivity extends ActionBarActivity {
         TextView numberTextView = (TextView) findViewById(R.id.numberTextView);
         TextView operationTextView = (TextView) findViewById(R.id.operationTextView);
         String textViewContent = numberTextView.getText().toString();
+        // If the number text view is empty or is just a point
+        // the second number will be 0
         if(textViewContent.equals("") || textViewContent.equals(".")) {
             number2 = 0.0;
         }
         else {
             number2 = Double.parseDouble(textViewContent);
         }
+        // Do the correct math operation
         if(operator.equals("+")) {
             result = number1 + number2;
         }
@@ -141,6 +159,7 @@ public class MainActivity extends ActionBarActivity {
             result = number1 * number2;
         }
         else if(operator.equals("/")) {
+            // Prevent 0/0 error
             try {
                 result = number1 / number2;
             }catch(ArithmeticException ae){
@@ -156,19 +175,26 @@ public class MainActivity extends ActionBarActivity {
         else if(operator.equals("*√")) {
             result = number1 * Math.sqrt(number2);
         }
-        else if(operator.equals("MOD")) {
+        else if(operator.equals("mod")) {
             result = number1 % number2;
         }
+        // If there's no a selected operation, the result 
+        // will be te last number introduced
         else {
             result = number2;
         }
+        // Clear screen 
         clearText();
+        // Takes just three digits after decimal point
         result = Math.floor(result * 1000) / 1000;
         numberTextView.setText(result.toString());
         operationTextView.setText("=");
+        // Allows to take the current result as the first number
+        // of a new operation
         defaultValues(result);
     }
 
+    // Methods for clear buttons
     public void onClickReset(View resetButton) {
         clearText();
         defaultValues();
