@@ -78,7 +78,7 @@ public class MainActivity extends ActionBarActivity {
         String number = button.getText().toString();
         TextView numberTextView = (TextView) findViewById(R.id.numberTextView);
         TextView operationTextView = (TextView) findViewById(R.id.operationTextView);
-        if(!operationTextView.getText().toString().equals("")) {
+        if(operationTextView.getText().toString().equals("=")) {
             operationTextView.setText("");
             numberTextView.setText(number);
         }
